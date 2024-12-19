@@ -1,0 +1,72 @@
+---
+tables:
+- name: "user_table"
+  columns:
+  - name: "userid"
+    type: "string"
+  - name: "password"
+    type: "string"
+  - name: "deviceid"
+    type: "string"
+  - name: "firsttimelogin"
+    type: "boolean"
+  - name: "termandcondition"
+    type: "boolean"
+  - name: "pushnotificationenabled"
+    type: "boolean"
+  data:
+  - termandcondition: true
+    deviceid: "1a9c47c9-4776-4416-8458-a3c746fa130e"
+    password: "v1sWejjIQ8UYCAvGI7Yjuw=="
+    pushnotificationenabled: true
+    userid: "bankuser"
+    firsttimelogin: true
+  rules:
+  - action: "updateDeviceId"
+    validations:
+    - type: "query"
+      query: "SELECT COUNT(*) FROM user_table WHERE userid = :userid"
+      expectedResult: "1"
+      error:
+        statusCode: 404
+        message: "User not found."
+    executionQuery:
+      query: "UPDATE user_table SET deviceid = :deviceid WHERE userid = :userid"
+      successMessage: "Device ID updated successfully."
+      errorMessage: "Failed to update Device ID."
+  - action: "validateLogin"
+    validations:
+    - name: "checkUserExists"
+      type: "query"
+      query: "SELECT COUNT(*) FROM user_table WHERE userid = :userid AND password\
+        \ = :password"
+      expectedResult: "1"
+      error:
+        statusCode: 401
+        message: "Invalid username or password."
+    executionQuery:
+      query: "SELECT userid, deviceid, firsttimelogin, termandcondition, pushnotificationenabled\
+        \ FROM user_table WHERE userid = :userid"
+      successMessage: "Login successful."
+      errorMessage: "Login failed due to unexpected error."
+  - action: "changePassword"
+    validations:
+    - name: "checkUserExists"
+      type: "query"
+      query: "SELECT COUNT(*) FROM user_table WHERE userid = :userid"
+      expectedResult: "1"
+      error:
+        statusCode: 404
+        message: "User not found."
+    - name: "checkOldPassword"
+      type: "query"
+      query: "SELECT COUNT(*) FROM user_table WHERE userid = :userid AND password\
+        \ = :oldPassword"
+      expectedResult: "1"
+      error:
+        statusCode: 403
+        message: "Old password is incorrect."
+    executionQuery:
+      query: "UPDATE user_table SET password = :newPassword WHERE userid = :userid"
+      successMessage: "Password changed successfully."
+      errorMessage: "Password change failed."

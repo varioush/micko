@@ -1,0 +1,201 @@
+{
+    "$schema": "http://json-schema.org/draft-06/schema#",
+    "$ref": "#/definitions/Welcome10",
+    "definitions": {
+        "Welcome10": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "tables": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Table"
+                    }
+                }
+            },
+            "required": [
+                "tables"
+            ],
+            "title": "Welcome10"
+        },
+        "Table": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "columns": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Column"
+                    }
+                },
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Datum"
+                    }
+                },
+                "rules": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Rule"
+                    }
+                }
+            },
+            "required": [
+                "columns",
+                "data",
+                "name",
+                "rules"
+            ],
+            "title": "Table"
+        },
+        "Column": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "secure": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "name",
+                "type"
+            ],
+            "title": "Column"
+        },
+        "Datum": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "userid": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                },
+                "deviceid": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "firsttimelogin": {
+                    "type": "boolean"
+                },
+                "pushnotificationenabled": {
+                    "type": "boolean"
+                },
+                "termandcondition": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "deviceid",
+                "firsttimelogin",
+                "password",
+                "pushnotificationenabled",
+                "termandcondition",
+                "userid"
+            ],
+            "title": "Datum"
+        },
+        "Rule": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "validations": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Validation"
+                    }
+                },
+                "executionQuery": {
+                    "$ref": "#/definitions/ExecutionQuery"
+                }
+            },
+            "required": [
+                "action",
+                "executionQuery",
+                "validations"
+            ],
+            "title": "Rule"
+        },
+        "ExecutionQuery": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "query": {
+                    "type": "string"
+                },
+                "successMessage": {
+                    "type": "string"
+                },
+                "errorMessage": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "errorMessage",
+                "query",
+                "successMessage"
+            ],
+            "title": "ExecutionQuery"
+        },
+        "Validation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                },
+                "query": {
+                    "type": "string"
+                },
+                "expectedResult": {
+                    "type": "string",
+                    "format": "integer"
+                },
+                "error": {
+                    "$ref": "#/definitions/Error"
+                }
+            },
+            "required": [
+                "error",
+                "expectedResult",
+                "query",
+                "type"
+            ],
+            "title": "Validation"
+        },
+        "Error": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "statusCode": {
+                    "type": "integer"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "message",
+                "statusCode"
+            ],
+            "title": "Error"
+        }
+    }
+}
